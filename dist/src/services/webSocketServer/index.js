@@ -34,15 +34,7 @@ class WebSocketServer extends events_1.default {
         }
         const client = this.realm.getClientById(id);
         if (client) {
-            if (token !== client.getToken()) {
-                // ID-taken, invalid token
-                socket.send(JSON.stringify({
-                    type: enums_1.MessageType.ID_TAKEN,
-                    payload: { msg: "ID is taken" }
-                }));
-                return socket.close();
-            }
-            return this._configureWS(socket, client);
+            this.realm.removeClientById(client.getId());
         }
         this._registerClient({ socket, id, token });
     }
